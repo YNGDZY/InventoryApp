@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">InventoryApp</string>
+    <string name="order">Order</string>
+    <string name="empty_view_title_text">No items to display</string>
+    <string name="empty_view_subtitle_text">Please add items using the button below</string>
+    <string name="action_delete_all_entries">Delete all</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="enter_name">Name</string>
+    <string name="name_hint">Enter name</string>
+    <string name="enter_price">Price</string>
+    <string name="price_hint">Enter price</string>
+    <string name="enter_quantity">Quantity</string>
+    <string name="quantity_hint">Enter quantity</string>
+    <string name="enter_image">Image</string>
+    <string name="select">Select</string>
+    <string name="image_name">Image name</string>
+    <string name="order_more">Order more</string>
+    <string name="editor_activity_title_new_item">New item</string>
+    <string name="editor_activity_title_edit_item">Edit item</string>
+    <string name="editor_insert_item_failed">Item insertion failed</string>
+    <string name="editor_insert_item_successful">Item insertion successful</string>
+    <string name="editor_update_item_failed">Item update failed</string>
+    <string name="editor_update_item_successful">Item update successful</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="editor_delete_item_successful">Delete Successful</string>
+    <string name="editor_delete_item_failed">Delete Failed</string>
+    <string name="delete_dialog_msg">Delete this item?</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
+    <string name="money">GBP</string>
+</resources>
