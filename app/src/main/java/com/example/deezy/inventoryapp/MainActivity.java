@@ -54,7 +54,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                Uri currentItemUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, id);
+                Cursor cursor = mCursorAdapter.getCursor();
+                int idColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry._ID);
+                int ident = cursor.getInt(idColumnIndex);
+                Uri currentItemUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, ident);
+                Log.e("uri", currentItemUri.toString());
                 intent.setData(currentItemUri);
                 startActivity(intent);
             }

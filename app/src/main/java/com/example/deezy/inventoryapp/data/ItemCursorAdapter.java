@@ -47,9 +47,8 @@ import static com.example.deezy.inventoryapp.data.DbBitmapUtility.getImage;
 
 public class ItemCursorAdapter extends CursorAdapter {
 
+
     public int quantityInt;
-    private String quantity;
-    private TextView quantityTextView;
     private Uri mCurrentItemUri;
 
     public ItemCursorAdapter(Context context, Cursor c) {
@@ -63,6 +62,10 @@ public class ItemCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+
+        String quantity;
+        final TextView quantityTextView;
+
 
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView priceTextView = (TextView) view.findViewById(R.id.price);
@@ -80,24 +83,33 @@ public class ItemCursorAdapter extends CursorAdapter {
 
         byte[] image = cursor.getBlob(imageColumnIndex);
         quantityInt = cursor.getInt(quantityColumnIndex);
-
-        sale.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (quantityInt >= 1) {
-                    quantityInt = quantityInt - 1;
-                    quantity = String.valueOf(quantityInt);
-                    quantityTextView.setText(quantity);
-                }
-            }
-        });
         quantity = String.valueOf(quantityInt);
         nameTextView.setText(itemName);
         priceTextView.setText(price);
         quantityTextView.setText(quantity);
 
+        sale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence quantityString = quantityTextView.getText();
+                quantityInt = Integer.parseInt(quantityString.toString());
+                quantityInt = clickMeth(quantityInt, quantityTextView);
+            }
+        });
+
         Bitmap decodedImage = DbBitmapUtility.getImage(image);
         imageView.setImageBitmap(decodedImage);
+
+    }
+
+    public int clickMeth(int quantityIntInt, TextView quantityTextView) {
+        if (quantityIntInt >= 1) {
+            quantityIntInt = quantityIntInt - 1;
+            String quantity = String.valueOf(quantityIntInt);
+            quantityTextView.setText(quantity);
+            return quantityIntInt;
+        }
+        return quantityIntInt;
 
     }
 }

@@ -51,13 +51,15 @@ public class EditorActivity extends AppCompatActivity implements
 
     private EditText mPriceEditText;
 
-    private EditText mQuantityEditText;
-
     private Bitmap imageBit = null;
+
+    private TextView quantityTextView;
 
     private TextView mImageName;
 
     private String imageName = null;
+
+    private int quantity =0;
 
     private static final int SELECT_PICTURE = 1;
 
@@ -78,6 +80,8 @@ public class EditorActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+        quantityTextView = (TextView) findViewById(R.id.quantityText);
+        quantityTextView.setText(Integer.toString(quantity));
 
         Intent intent = getIntent();
         mCurrentItemUri = intent.getData();
@@ -94,11 +98,35 @@ public class EditorActivity extends AppCompatActivity implements
 
         mNameEditText = (EditText) findViewById(R.id.enterName);
         mPriceEditText = (EditText) findViewById(R.id.enterPrice);
-        mQuantityEditText = (EditText) findViewById(R.id.enterQuantity);
+
         mImageName = (TextView) findViewById(R.id.imageName);
+
+
         mNameEditText.setOnTouchListener(mTouchListener);
         mPriceEditText.setOnTouchListener(mTouchListener);
-        mQuantityEditText.setOnTouchListener(mTouchListener);
+
+
+        Button plusButton = (Button) findViewById(R.id.plus);
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quantity = quantity + 1;
+                quantityTextView.setText(Integer.toString(quantity));
+
+            }
+        });
+        Button minusButton = (Button) findViewById(R.id.minus);
+        minusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(quantity > 0) {
+                    quantity = quantity - 1;
+                    quantityTextView.setText(Integer.toString(quantity));
+
+                }
+            }
+        });
+
 
         Button imageButton = (Button) findViewById(R.id.select_button);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -127,30 +155,6 @@ public class EditorActivity extends AppCompatActivity implements
             }
         });
     }
-
-    /*public void onActivityResult(Intent data) {
-                Uri selectedImageUri = data.getData();
-                selectedImagePath = getPath(selectedImageUri);
-            }
-
-    public String getPath(Uri uri) {
-
-        if( uri == null ) {
-            return null;
-        }
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if( cursor != null ){
-            int column_index = cursor
-                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String path = cursor.getString(column_index);
-            cursor.close();
-            return path;
-        }
-        return uri.getPath();
-    }*/
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -189,9 +193,12 @@ public class EditorActivity extends AppCompatActivity implements
 
         String nameString = mNameEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
-        String quantityString = mQuantityEditText.getText().toString().trim();
+        String quantityString = Integer.toString(quantity);
         if (imageBit == null) {
             imageBit = BitmapFactory.decodeResource(getResources(), R.drawable.noimage);
+            Toast.makeText(this, getString(R.string.select_image),
+                    Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (imageName == null) {
@@ -201,6 +208,13 @@ public class EditorActivity extends AppCompatActivity implements
         if (mCurrentItemUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
                 TextUtils.isEmpty(quantityString)) {
+            Toast.makeText(this, getString(R.string.insert_info),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(nameString)){
+            Toast.makeText(this, getString(R.string.insert_name),
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -210,9 +224,15 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(ItemContract.ItemEntry.COLUMN_IMAGE, imageBlob);
         values.put(ItemContract.ItemEntry.COLUMN_IMAGE_NAME, imageName);
 
-        int quantity = 0;
+
+
+
         if (!TextUtils.isEmpty(quantityString)) {
             quantity = Integer.parseInt(quantityString);
+        }else{
+            Toast.makeText(this, getString(R.string.insert_quantity),
+                    Toast.LENGTH_SHORT).show();
+            return;
         }
         values.put(ItemContract.ItemEntry.COLUMN_QUANTITY, quantity);
         int price = 0;
@@ -323,7 +343,7 @@ public class EditorActivity extends AppCompatActivity implements
                 ItemContract.ItemEntry.COLUMN_IMAGE_NAME};
 
         return new CursorLoader(this,
-                ItemContract.ItemEntry.CONTENT_URI,
+                mCurrentItemUri,
                 projection,
                 null,
                 null,
@@ -349,13 +369,13 @@ public class EditorActivity extends AppCompatActivity implements
 
 
             int price = cursor.getInt(priceColumnIndex);
-            int quantity = cursor.getInt(quantityColumnIndex);
+            quantity = cursor.getInt(quantityColumnIndex);
             String imageName = cursor.getString(imageNameColumnIndex);
 
             mNameEditText.setText(name);
             mPriceEditText.setText(Integer.toString(price));
-            mQuantityEditText.setText(Integer.toString(quantity));
             mImageName.setText(imageName);
+            quantityTextView.setText(Integer.toString(quantity));
 
         }
     }
@@ -364,7 +384,7 @@ public class EditorActivity extends AppCompatActivity implements
     public void onLoaderReset(Loader<Cursor> loader) {
 
         mNameEditText.setText("");
-        mQuantityEditText.setText("");
+        quantityTextView.setText("");
         mPriceEditText.setText("");
 
     }
