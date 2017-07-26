@@ -74,7 +74,7 @@ public class ItemProvider extends ContentProvider {
             case ITEM_ID:
 
                 selection = ItemContract.ItemEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor = database.query(TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
@@ -109,7 +109,7 @@ public class ItemProvider extends ContentProvider {
         }
 
         Integer price = values.getAsInteger(ItemContract.ItemEntry.COLUMN_PRICE);
-        if (price != null && price <0) {
+        if (price != null && price < 0) {
             throw new IllegalArgumentException("Price Required");
         }
 
@@ -141,7 +141,7 @@ public class ItemProvider extends ContentProvider {
                 return updateItem(uri, contentValues, selection, selectionArgs);
             case ITEM_ID:
                 selection = ItemContract.ItemEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateItem(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
@@ -156,19 +156,19 @@ public class ItemProvider extends ContentProvider {
                 throw new IllegalArgumentException("Item name required");
             }
         }
-        if(values.containsKey(ItemContract.ItemEntry.COLUMN_IMAGE_NAME)){
+        if (values.containsKey(ItemContract.ItemEntry.COLUMN_IMAGE_NAME)) {
             String imageName = values.getAsString(ItemContract.ItemEntry.COLUMN_IMAGE_NAME);
             if (imageName == null) {
                 throw new IllegalArgumentException("Image name required");
             }
         }
 
-        if (values.containsKey(ItemContract.ItemEntry.COLUMN_PRICE)){
+        if (values.containsKey(ItemContract.ItemEntry.COLUMN_PRICE)) {
             Integer price = values.getAsInteger(ItemContract.ItemEntry.COLUMN_PRICE);
-        if (price != null && price < 0) {
-            throw new IllegalArgumentException("Price Required");
+            if (price != null && price < 0) {
+                throw new IllegalArgumentException("Price Required");
+            }
         }
-    }
         if (values.containsKey(ItemContract.ItemEntry.COLUMN_QUANTITY)) {
             Integer quantity = values.getAsInteger(ItemContract.ItemEntry.COLUMN_QUANTITY);
             if (quantity != null && quantity < 0) {
@@ -203,7 +203,7 @@ public class ItemProvider extends ContentProvider {
                 break;
             case ITEM_ID:
                 selection = ItemContract.ItemEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted = database.delete(ItemContract.ItemEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:

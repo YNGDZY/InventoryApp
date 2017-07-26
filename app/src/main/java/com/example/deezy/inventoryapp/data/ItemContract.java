@@ -12,12 +12,12 @@ import static android.text.style.TtsSpan.GENDER_MALE;
 public final class ItemContract {
 
 
-    private ItemContract() {}
+    private ItemContract() {
+    }
 
     public static final String CONTENT_AUTHORITY = "com.example.deezy.inventoryapp";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-
 
 
     public static final String PATH_ITEMS = "items";
@@ -37,7 +37,7 @@ public final class ItemContract {
 
         public final static String _ID = BaseColumns._ID;
 
-        public final static String COLUMN_ITEM_NAME ="name";
+        public final static String COLUMN_ITEM_NAME = "name";
 
         public final static String COLUMN_PRICE = "price";
 

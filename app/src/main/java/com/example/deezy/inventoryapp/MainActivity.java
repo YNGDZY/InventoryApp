@@ -22,7 +22,7 @@ import android.widget.ListView;
 import com.example.deezy.inventoryapp.data.ItemContract;
 import com.example.deezy.inventoryapp.data.ItemCursorAdapter;
 
-public class MainActivity extends AppCompatActivity implements  LoaderManager.LoaderCallbacks<Cursor>{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int ITEM_LOADER = 0;
 

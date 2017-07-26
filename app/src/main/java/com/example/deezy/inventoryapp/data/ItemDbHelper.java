@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
-
 import static com.example.deezy.inventoryapp.data.ItemContract.ItemEntry.TABLE_NAME;
 
 public class ItemDbHelper extends SQLiteOpenHelper {
@@ -24,7 +23,7 @@ public class ItemDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String SQL_CREATE_ITEMS_TABLE =  "CREATE TABLE " + ItemContract.ItemEntry.TABLE_NAME + " ("
+        String SQL_CREATE_ITEMS_TABLE = "CREATE TABLE " + ItemContract.ItemEntry.TABLE_NAME + " ("
                 + ItemContract.ItemEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ItemContract.ItemEntry.COLUMN_ITEM_NAME + " TEXT NOT NULL, "
                 + ItemContract.ItemEntry.COLUMN_PRICE + " INTEGER NOT NULL, "

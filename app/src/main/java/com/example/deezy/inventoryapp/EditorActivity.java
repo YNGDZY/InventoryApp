@@ -167,7 +167,7 @@ public class EditorActivity extends AppCompatActivity implements
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            String[] projection = { MediaStore.Images.Media.DATA };
+            String[] projection = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
             cursor.moveToFirst();
@@ -176,7 +176,7 @@ public class EditorActivity extends AppCompatActivity implements
 
             int columnIndex = cursor.getColumnIndex(projection[0]);
             imageName = cursor.getString(columnIndex);
-            if(imageName == null){
+            if (imageName == null) {
                 imageName = "No name available";
             }
             mImageName = (TextView) findViewById(R.id.imageName);
@@ -190,11 +190,11 @@ public class EditorActivity extends AppCompatActivity implements
         String nameString = mNameEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
         String quantityString = mQuantityEditText.getText().toString().trim();
-        if(imageBit == null) {
+        if (imageBit == null) {
             imageBit = BitmapFactory.decodeResource(getResources(), R.drawable.noimage);
         }
 
-        if(imageName == null){
+        if (imageName == null) {
             imageName = "No name available";
         }
 

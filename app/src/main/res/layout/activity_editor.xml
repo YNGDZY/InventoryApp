@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal">
-
-       <TextView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_weight="2"
-           android:text="@string/enter_name"/>
-       <EditText
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_weight="1"
-           android:hint="@string/name_hint"
-           android:id="@+id/enterName"/>
-
-   </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,16 +13,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="@string/enter_price"/>
+            android:text="@string/enter_name" />
+
         <EditText
+            android:id="@+id/enterName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/name_hint" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/enter_price" />
+
+        <EditText
+            android:id="@+id/enterPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/price_hint"
-            android:inputType="number"
-            android:id="@+id/enterPrice"/>
+            android:inputType="number" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,14 +54,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="@string/enter_quantity"/>
+            android:text="@string/enter_quantity" />
+
         <EditText
+            android:id="@+id/enterQuantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/quantity_hint"
-            android:inputType="number"
-            android:id="@+id/enterQuantity"/>
+            android:inputType="number" />
 
     </LinearLayout>
 
@@ -68,24 +74,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="@string/enter_image"/>
+            android:text="@string/enter_image" />
+
         <TextView
+            android:id="@+id/imageName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/imageName"/>
+            android:layout_weight="1" />
+
         <Button
+            android:id="@+id/select_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/select"
-            android:id="@+id/select_button"/>
+            android:text="@string/select" />
 
     </LinearLayout>
+    
+
     <Button
+        android:id="@+id/order_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/order_more"
         android:layout_gravity="end"
-        android:id="@+id/order_more"/>
+        android:text="@string/order_more" />
 
 </LinearLayout>

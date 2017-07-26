@@ -45,7 +45,7 @@ import static com.example.deezy.inventoryapp.R.id.imageName;
 import static com.example.deezy.inventoryapp.R.id.quantity;
 import static com.example.deezy.inventoryapp.data.DbBitmapUtility.getImage;
 
-public class ItemCursorAdapter extends CursorAdapter{
+public class ItemCursorAdapter extends CursorAdapter {
 
     public int quantityInt;
     private String quantity;
