@@ -319,7 +319,8 @@ public class EditorActivity extends AppCompatActivity implements
                 ItemContract.ItemEntry.COLUMN_ITEM_NAME,
                 ItemContract.ItemEntry.COLUMN_IMAGE,
                 ItemContract.ItemEntry.COLUMN_QUANTITY,
-                ItemContract.ItemEntry.COLUMN_PRICE};
+                ItemContract.ItemEntry.COLUMN_PRICE,
+                ItemContract.ItemEntry.COLUMN_IMAGE_NAME};
 
         return new CursorLoader(this,
                 ItemContract.ItemEntry.CONTENT_URI,
@@ -341,7 +342,11 @@ public class EditorActivity extends AppCompatActivity implements
             int priceColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_PRICE);
             int quantityColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_QUANTITY);
             int imageNameColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE_NAME);
+            int imageColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE);
             String name = cursor.getString(nameColumnIndex);
+            byte[] image = cursor.getBlob(imageColumnIndex);
+            imageBit = DbBitmapUtility.getImage(image);
+
 
             int price = cursor.getInt(priceColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);

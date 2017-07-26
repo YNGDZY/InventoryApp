@@ -15,12 +15,16 @@
  */
 package com.example.deezy.inventoryapp.data;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,18 +40,20 @@ import com.example.deezy.inventoryapp.R;
 import java.sql.Blob;
 import java.util.List;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.example.deezy.inventoryapp.R.id.imageName;
 import static com.example.deezy.inventoryapp.R.id.quantity;
 import static com.example.deezy.inventoryapp.data.DbBitmapUtility.getImage;
 
-public class ItemCursorAdapter extends CursorAdapter {
+public class ItemCursorAdapter extends CursorAdapter{
 
     public int quantityInt;
     private String quantity;
     private TextView quantityTextView;
     private Uri mCurrentItemUri;
+
     public ItemCursorAdapter(Context context, Cursor c) {
-        super(context, c, 0 );
+        super(context, c, 0);
     }
 
     @Override
@@ -78,7 +84,7 @@ public class ItemCursorAdapter extends CursorAdapter {
         sale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quantityInt >= 1) {
+                if (quantityInt >= 1) {
                     quantityInt = quantityInt - 1;
                     quantity = String.valueOf(quantityInt);
                     quantityTextView.setText(quantity);
@@ -89,7 +95,9 @@ public class ItemCursorAdapter extends CursorAdapter {
         nameTextView.setText(itemName);
         priceTextView.setText(price);
         quantityTextView.setText(quantity);
+
         Bitmap decodedImage = DbBitmapUtility.getImage(image);
         imageView.setImageBitmap(decodedImage);
+
     }
 }
