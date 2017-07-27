@@ -206,11 +206,7 @@ public class EditorActivity extends AppCompatActivity implements
         nameString = mNameEditText.getText().toString().trim();
         priceString = mPriceEditText.getText().toString().trim();
         quantityString = Integer.toString(quantity);
-        if (imageBit == null) {
-            imageBit = BitmapFactory.decodeResource(getResources(), R.drawable.noimage);
-            Toast.makeText(this, getString(R.string.select_image),
-                    Toast.LENGTH_SHORT).show();
-        }
+
 
         if (imageName == null) {
             imageName = "No name available";
@@ -218,15 +214,28 @@ public class EditorActivity extends AppCompatActivity implements
 
         if (mCurrentItemUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
-                TextUtils.isEmpty(quantityString)) {
+                quantity <= 0 && imageBit == null) {
             Toast.makeText(this, getString(R.string.insert_info),
                     Toast.LENGTH_SHORT).show();
             return;
         }
+
         if(TextUtils.isEmpty(nameString)){
             Toast.makeText(this, getString(R.string.insert_name),
                     Toast.LENGTH_SHORT).show();
             return;
+        }
+        if(TextUtils.isEmpty(priceString)){
+            Toast.makeText(this, getString(R.string.insert_price),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (imageBit == null) {
+//            imageBit = BitmapFactory.decodeResource(getResources(), R.drawable.noimage);
+            Toast.makeText(this, getString(R.string.select_image),
+                    Toast.LENGTH_SHORT).show();
+            return;
+
         }
 
         ContentValues values = new ContentValues();
@@ -236,11 +245,14 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(ItemContract.ItemEntry.COLUMN_IMAGE_NAME, imageName);
 
 
-
-
         if (!TextUtils.isEmpty(quantityString)) {
             quantity = Integer.parseInt(quantityString);
         }else{
+            Toast.makeText(this, getString(R.string.insert_quantity),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(quantity <=0){
             Toast.makeText(this, getString(R.string.insert_quantity),
                     Toast.LENGTH_SHORT).show();
             return;
@@ -304,7 +316,7 @@ public class EditorActivity extends AppCompatActivity implements
             case R.id.action_save:
                 saveItem();
                 if(!TextUtils.isEmpty(nameString) && !TextUtils.isEmpty(priceString) &&
-                        !TextUtils.isEmpty(quantityString) && imageBit != null) {
+                        !TextUtils.isEmpty(quantityString) && imageBit != null && quantity < 0) {
                     finish();
                 }
 

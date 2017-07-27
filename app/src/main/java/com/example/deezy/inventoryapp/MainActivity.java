@@ -17,10 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.deezy.inventoryapp.data.ItemContract;
 import com.example.deezy.inventoryapp.data.ItemCursorAdapter;
+
+import static com.example.deezy.inventoryapp.R.id.quantity;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
+
         getLoaderManager().initLoader(ITEM_LOADER, null, this);
     }
 

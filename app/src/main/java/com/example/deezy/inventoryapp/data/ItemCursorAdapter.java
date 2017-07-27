@@ -16,6 +16,7 @@
 package com.example.deezy.inventoryapp.data;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -42,10 +43,11 @@ import java.util.List;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.example.deezy.inventoryapp.R.id.imageName;
+import static com.example.deezy.inventoryapp.R.id.price;
 import static com.example.deezy.inventoryapp.R.id.quantity;
 import static com.example.deezy.inventoryapp.data.DbBitmapUtility.getImage;
 
-public class ItemCursorAdapter extends CursorAdapter {
+public class ItemCursorAdapter extends CursorAdapter  {
 
 
     public int quantityInt;
@@ -61,14 +63,15 @@ public class ItemCursorAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, Context context, final Cursor cursor) {
 
         String quantity;
         final TextView quantityTextView;
 
 
+
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
-        TextView priceTextView = (TextView) view.findViewById(R.id.price);
+        TextView priceTextView = (TextView) view.findViewById(price);
         quantityTextView = (TextView) view.findViewById(R.id.quantity);
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
         Button sale = (Button) view.findViewById(R.id.order);
@@ -93,20 +96,31 @@ public class ItemCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
                 CharSequence quantityString = quantityTextView.getText();
                 quantityInt = Integer.parseInt(quantityString.toString());
-                quantityInt = clickMeth(quantityInt, quantityTextView);
+                quantityInt = clickMeth(quantityInt, quantityTextView, cursor);
             }
         });
-
         Bitmap decodedImage = DbBitmapUtility.getImage(image);
         imageView.setImageBitmap(decodedImage);
 
     }
 
-    public int clickMeth(int quantityIntInt, TextView quantityTextView) {
+    public int clickMeth(int quantityIntInt, TextView quantityTextView, Cursor cursor) {
         if (quantityIntInt >= 1) {
+            ItemProvider imte = new ItemProvider();
+
+
+            int idColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry._ID);
+            int ident = cursor.getInt(idColumnIndex);
+
+            Uri currentItemUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, ident  );
+            ContentValues values = new ContentValues();
             quantityIntInt = quantityIntInt - 1;
+            values.put(ItemContract.ItemEntry.COLUMN_QUANTITY, quantityIntInt);
+
+            imte.update(currentItemUri, values, null ,null);
             String quantity = String.valueOf(quantityIntInt);
             quantityTextView.setText(quantity);
+
             return quantityIntInt;
         }
         return quantityIntInt;
