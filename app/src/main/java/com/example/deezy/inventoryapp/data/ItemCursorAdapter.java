@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
@@ -47,7 +48,7 @@ import static com.example.deezy.inventoryapp.R.id.price;
 import static com.example.deezy.inventoryapp.R.id.quantity;
 import static com.example.deezy.inventoryapp.data.DbBitmapUtility.getImage;
 
-public class ItemCursorAdapter extends CursorAdapter  {
+public class ItemCursorAdapter extends CursorAdapter {
 
 
     public int quantityInt;
@@ -63,12 +64,10 @@ public class ItemCursorAdapter extends CursorAdapter  {
     }
 
     @Override
-    public void bindView(View view, Context context, final Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
 
         String quantity;
         final TextView quantityTextView;
-
-
 
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView priceTextView = (TextView) view.findViewById(price);
@@ -80,6 +79,9 @@ public class ItemCursorAdapter extends CursorAdapter  {
         int priceColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_PRICE);
         int quantityColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_QUANTITY);
         int imageColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE);
+        int idColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry._ID);
+        int ident = cursor.getInt(idColumnIndex);
+        final Uri currentItemUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, ident);
 
         String itemName = cursor.getString(nameColumnIndex);
         String price = String.valueOf(cursor.getInt(priceColumnIndex));
@@ -97,6 +99,9 @@ public class ItemCursorAdapter extends CursorAdapter  {
                 CharSequence quantityString = quantityTextView.getText();
                 quantityInt = Integer.parseInt(quantityString.toString());
                 quantityInt = clickMeth(quantityInt, quantityTextView, cursor);
+                ContentValues values = new ContentValues();
+                values.put(ItemContract.ItemEntry.COLUMN_QUANTITY, quantityInt);
+                context.getContentResolver().update(currentItemUri, values, null, null);
             }
         });
         Bitmap decodedImage = DbBitmapUtility.getImage(image);
@@ -106,18 +111,7 @@ public class ItemCursorAdapter extends CursorAdapter  {
 
     public int clickMeth(int quantityIntInt, TextView quantityTextView, Cursor cursor) {
         if (quantityIntInt >= 1) {
-            ItemProvider imte = new ItemProvider();
-
-
-            int idColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry._ID);
-            int ident = cursor.getInt(idColumnIndex);
-
-            Uri currentItemUri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI, ident  );
-            ContentValues values = new ContentValues();
             quantityIntInt = quantityIntInt - 1;
-            values.put(ItemContract.ItemEntry.COLUMN_QUANTITY, quantityIntInt);
-
-            imte.update(currentItemUri, values, null ,null);
             String quantity = String.valueOf(quantityIntInt);
             quantityTextView.setText(quantity);
 
@@ -126,4 +120,6 @@ public class ItemCursorAdapter extends CursorAdapter  {
         return quantityIntInt;
 
     }
+
+
 }

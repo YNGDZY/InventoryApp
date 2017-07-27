@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.deezy.inventoryapp.data.ItemContract;
 import com.example.deezy.inventoryapp.data.ItemCursorAdapter;
+import com.example.deezy.inventoryapp.data.ItemDbHelper;
 
 import static com.example.deezy.inventoryapp.R.id.quantity;
 
@@ -67,9 +68,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(intent);
             }
         });
-
         getLoaderManager().initLoader(ITEM_LOADER, null, this);
     }
+
 
     private void deleteAllPets() {
         int rowsDeleted = getContentResolver().delete(ItemContract.ItemEntry.CONTENT_URI, null, null);

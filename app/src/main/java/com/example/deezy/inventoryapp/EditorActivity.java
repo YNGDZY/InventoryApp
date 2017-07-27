@@ -59,14 +59,14 @@ public class EditorActivity extends AppCompatActivity implements
     private ImageView imageView;
 
     private String name;
-
+    private String nameName;
     private TextView quantityTextView;
 
     private TextView mImageName;
 
     private String imageName = null;
 
-    private int quantity =0;
+    private int quantity = 0;
 
     private static final int SELECT_PICTURE = 1;
 
@@ -126,7 +126,7 @@ public class EditorActivity extends AppCompatActivity implements
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quantity > 0) {
+                if (quantity > 0) {
                     quantity = quantity - 1;
                     quantityTextView.setText(Integer.toString(quantity));
 
@@ -154,10 +154,11 @@ public class EditorActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
+                nameName = mNameEditText.getText().toString();
                 intent.setType("text/html");
                 intent.putExtra(Intent.EXTRA_EMAIL, "orderexample@gmail.com");
-                intent.putExtra(Intent.EXTRA_SUBJECT, name);
-                intent.putExtra(Intent.EXTRA_TEXT, "I would like to order more of your product " + name + ".");
+                intent.putExtra(Intent.EXTRA_SUBJECT, nameName);
+                intent.putExtra(Intent.EXTRA_TEXT, "I would like to order more of your product " + nameName + ".");
                 startActivity(Intent.createChooser(intent, "Send Email"));
             }
         });
@@ -220,12 +221,12 @@ public class EditorActivity extends AppCompatActivity implements
             return;
         }
 
-        if(TextUtils.isEmpty(nameString)){
+        if (TextUtils.isEmpty(nameString)) {
             Toast.makeText(this, getString(R.string.insert_name),
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(priceString)){
+        if (TextUtils.isEmpty(priceString)) {
             Toast.makeText(this, getString(R.string.insert_price),
                     Toast.LENGTH_SHORT).show();
             return;
@@ -247,12 +248,12 @@ public class EditorActivity extends AppCompatActivity implements
 
         if (!TextUtils.isEmpty(quantityString)) {
             quantity = Integer.parseInt(quantityString);
-        }else{
+        } else {
             Toast.makeText(this, getString(R.string.insert_quantity),
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        if(quantity <=0){
+        if (quantity <= 0) {
             Toast.makeText(this, getString(R.string.insert_quantity),
                     Toast.LENGTH_SHORT).show();
             return;
@@ -315,7 +316,7 @@ public class EditorActivity extends AppCompatActivity implements
 
             case R.id.action_save:
                 saveItem();
-                if(!TextUtils.isEmpty(nameString) && !TextUtils.isEmpty(priceString) &&
+                if (!TextUtils.isEmpty(nameString) && !TextUtils.isEmpty(priceString) &&
                         !TextUtils.isEmpty(quantityString) && imageBit != null && quantity < 0) {
                     finish();
                 }
