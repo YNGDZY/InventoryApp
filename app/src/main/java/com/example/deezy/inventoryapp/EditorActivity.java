@@ -317,7 +317,7 @@ public class EditorActivity extends AppCompatActivity implements
             case R.id.action_save:
                 saveItem();
                 if (!TextUtils.isEmpty(nameString) && !TextUtils.isEmpty(priceString) &&
-                        !TextUtils.isEmpty(quantityString) && imageBit != null && quantity < 0) {
+                        !TextUtils.isEmpty(quantityString) && imageBit != null && quantity > 0) {
                     finish();
                 }
 
