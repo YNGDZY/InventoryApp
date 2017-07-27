@@ -44,6 +44,9 @@ public class EditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int EXISTING_ITEM_LOADER = 0;
+    private String nameString;
+    private String priceString;
+    private String quantityString;
 
     private Uri mCurrentItemUri;
 
@@ -52,6 +55,10 @@ public class EditorActivity extends AppCompatActivity implements
     private EditText mPriceEditText;
 
     private Bitmap imageBit = null;
+
+    private ImageView imageView;
+
+    private String name;
 
     private TextView quantityTextView;
 
@@ -149,11 +156,14 @@ public class EditorActivity extends AppCompatActivity implements
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/html");
                 intent.putExtra(Intent.EXTRA_EMAIL, "orderexample@gmail.com");
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Order");
-                intent.putExtra(Intent.EXTRA_TEXT, "I would like to order more of your product.");
+                intent.putExtra(Intent.EXTRA_SUBJECT, name);
+                intent.putExtra(Intent.EXTRA_TEXT, "I would like to order more of your product " + name + ".");
                 startActivity(Intent.createChooser(intent, "Send Email"));
             }
         });
+
+        imageView = (ImageView) findViewById(R.id.imgView);
+        imageView.setImageBitmap(imageBit);
     }
 
     @Override
@@ -166,6 +176,8 @@ public class EditorActivity extends AppCompatActivity implements
 
             try {
                 imageBit = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                imageView = (ImageView) findViewById(R.id.imgView);
+                imageView.setImageBitmap(imageBit);
                 // Log.d(TAG, String.valueOf(bitmap));
 
             } catch (IOException e) {
@@ -191,14 +203,13 @@ public class EditorActivity extends AppCompatActivity implements
 
     private void saveItem() {
 
-        String nameString = mNameEditText.getText().toString().trim();
-        String priceString = mPriceEditText.getText().toString().trim();
-        String quantityString = Integer.toString(quantity);
+        nameString = mNameEditText.getText().toString().trim();
+        priceString = mPriceEditText.getText().toString().trim();
+        quantityString = Integer.toString(quantity);
         if (imageBit == null) {
             imageBit = BitmapFactory.decodeResource(getResources(), R.drawable.noimage);
             Toast.makeText(this, getString(R.string.select_image),
                     Toast.LENGTH_SHORT).show();
-            return;
         }
 
         if (imageName == null) {
@@ -292,7 +303,11 @@ public class EditorActivity extends AppCompatActivity implements
 
             case R.id.action_save:
                 saveItem();
-                finish();
+                if(!TextUtils.isEmpty(nameString) && !TextUtils.isEmpty(priceString) &&
+                        !TextUtils.isEmpty(quantityString) && imageBit != null) {
+                    finish();
+                }
+
                 return true;
             case R.id.action_delete:
                 showDeleteConfirmationDialog();
@@ -363,7 +378,7 @@ public class EditorActivity extends AppCompatActivity implements
             int quantityColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_QUANTITY);
             int imageNameColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE_NAME);
             int imageColumnIndex = cursor.getColumnIndex(ItemContract.ItemEntry.COLUMN_IMAGE);
-            String name = cursor.getString(nameColumnIndex);
+            name = cursor.getString(nameColumnIndex);
             byte[] image = cursor.getBlob(imageColumnIndex);
             imageBit = DbBitmapUtility.getImage(image);
 
@@ -376,6 +391,8 @@ public class EditorActivity extends AppCompatActivity implements
             mPriceEditText.setText(Integer.toString(price));
             mImageName.setText(imageName);
             quantityTextView.setText(Integer.toString(quantity));
+            imageView = (ImageView) findViewById(R.id.imgView);
+            imageView.setImageBitmap(imageBit);
 
         }
     }
@@ -412,7 +429,7 @@ public class EditorActivity extends AppCompatActivity implements
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                deletePet();
+                deleteItem();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -427,7 +444,7 @@ public class EditorActivity extends AppCompatActivity implements
         alertDialog.show();
     }
 
-    private void deletePet() {
+    private void deleteItem() {
         if (mCurrentItemUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentItemUri, null, null);
             if (rowsDeleted == 0) {
